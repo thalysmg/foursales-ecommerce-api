@@ -58,11 +58,11 @@
             INSERT INTO perfil (nome) VALUES ('ADMIN');
             INSERT INTO perfil (nome) VALUES ('USER');
             -- senha admin123
-            INSERT INTO usuario (nome, email, senha, id_perfil)
-            VALUES ('Administrador', 'administrador@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 1);
+            INSERT INTO usuario (nome, email, senha, id_perfil, ativo)
+            VALUES ('Administrador', 'administrador@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 1, TRUE);
 
-            INSERT INTO usuario (nome, email, senha, id_perfil)
-            VALUES ('Usuário', 'usuario@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2);
+            INSERT INTO usuario (nome, email, senha, id_perfil, ativo)
+            VALUES ('Usuário', 'usuario@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2, TRUE);
         </sql>
     </changeSet>
 </databaseChangeLog>
