@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+>
+    <property name="uuid" value="UUID()" dbms="mysql"/>
+
+    <changeSet id="202502031828_1" author="thalys.gadelha">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="perfil"/>
+            </not>
+        </preConditions>
+        <createTable tableName="perfil">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(60)">
+                <constraints primaryKey="true" primaryKeyName="pk_perfil" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202502031828_2" author="thalys.gadelha">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="usuario"/>
+            </not>
+        </preConditions>
+        <createTable tableName="usuario">
+            <column name="id" type="uuid" defaultValueComputed="(uuid())">
+                <constraints primaryKey="true" primaryKeyName="pk_usuario" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="senha" type="CHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_perfil" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_perfil" referencedTableName="perfil" referencedColumnNames="id"/>
+            </column>
+            <column name="data_cadastro" type="DATETIME" defaultValueDate="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202502031828_3" author="thalys.gadelha">
+        <sql>
+            INSERT INTO perfil (nome) VALUES ('ADMIN');
+            INSERT INTO perfil (nome) VALUES ('USER');
+            -- senha admin123
+            INSERT INTO usuario (nome, email, senha, id_perfil)
+            VALUES ('Administrador', 'administrador@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 1);
+
+            INSERT INTO usuario (nome, email, senha, id_perfil)
+            VALUES ('Usuário', 'usuario@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

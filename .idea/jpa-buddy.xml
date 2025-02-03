@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig" newRepositoryParent="org.springframework.data.jpa.repository.JpaRepository">
+    <option name="defaultUnitInitialized" value="true" />
+    <option name="renamerInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="f5e7b8c5-f7ab-4494-84d0-8d1fa9f659a6" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/br/com/peludinhos/peludinhosaespera/model" />
+  </component>
+</project>
