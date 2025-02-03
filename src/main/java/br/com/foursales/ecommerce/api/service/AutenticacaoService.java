@@ -30,6 +30,6 @@ public class AutenticacaoService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.senha()));
         Usuario usuario = repository.findByEmail(request.email()).orElseThrow(USUARIO_NAO_ENCONTRADO_EXC);
         String jwtToken = JwtService.generateToken(usuario);
-        return new LoginResponse("Bearer " + jwtToken, JwtService.extractExpiration(jwtToken)) ;
+        return new LoginResponse("Bearer " + jwtToken, JwtService.extractExpiration(jwtToken));
     }
 }

@@ -16,7 +16,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="nome" type="VARCHAR(60)">
-                <constraints primaryKey="true" primaryKeyName="pk_perfil" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>

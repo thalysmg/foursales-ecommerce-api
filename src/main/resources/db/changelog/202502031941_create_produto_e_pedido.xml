@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+>
+    <property name="uuid" value="UUID()" dbms="mysql"/>
+
+    <changeSet id="202502031941_1" author="thalys.gadelha">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="produto"/></not>
+        </preConditions>
+        <createTable tableName="produto">
+            <column name="id" type="uuid" defaultValueComputed="(uuid())">
+                <constraints primaryKey="true" primaryKeyName="pk_produto" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preco" type="DECIMAL(11,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="descricao" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qtd_estoque" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_cadastro" type="DATETIME" defaultValueDate="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME"/>
+            <column name="id_usuario_cadastro" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_usuario_cadastro" referencedTableName="usuario" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202502031941_2" author="thalys.gadelha">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="pedido"/></not>
+        </preConditions>
+        <createTable tableName="pedido">
+            <column name="id" type="uuid" defaultValueComputed="(uuid())">
+                <constraints primaryKey="true" primaryKeyName="pk_pedido" nullable="false"/>
+            </column>
+            <column name="valor_total" type="DECIMAL(11,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_cliente" type="UUID">
+                <constraints nullable="false" foreignKeyName="fk_cliente" referencedTableName="usuario" referencedColumnNames="id"/>
+            </column>
+            <column name="data" type="DATETIME" defaultValueDate="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME"/>
+            <column name="situacao" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202502031941_3" author="thalys.gadelha">
+        <createTable tableName="pedido_produto">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_pedido_produto"/>
+            </column>
+            <column name="id_pedido" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_pedido" referencedTableName="pedido" referencedColumnNames="id"/>
+            </column>
+            <column name="id_produto" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_produto" referencedTableName="produto" referencedColumnNames="id"/>
+            </column>
+            <column name="qtd_produto" type="INT">
+                <constraints nullable="false" checkConstraint="qtd_produto > 0"/>
+            </column>
+            <column name="preco_unitario" type="DECIMAL(11,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -5,4 +5,5 @@
 >
     <include file="changelog/202502031827_create_table_perfil_e_usuario.xml" relativeToChangelogFile="true"/>
 
+    <include file="changelog/202502031941_create_produto_e_pedido.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

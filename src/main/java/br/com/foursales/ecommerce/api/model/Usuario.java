@@ -2,27 +2,32 @@ package br.com.foursales.ecommerce.api.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "usuario")
+@EntityListeners(AuditingEntityListener .class)
 public class Usuario implements UserDetails {
 
     @Id
@@ -42,16 +47,16 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "id_perfil", nullable = false)
     private Perfil perfil;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "data_cadastro", nullable = false)
-    private Instant dataCadastro;
+    private LocalDateTime dataCadastro;
 
     @Column(name = "ativo", nullable = false)
     private boolean ativo;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "data_atualizacao")
-    private Instant dataAtualizacao;
+    private LocalDateTime dataAtualizacao;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
