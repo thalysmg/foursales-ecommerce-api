@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,12 +19,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @EnableWebSecurity
@@ -40,9 +42,13 @@ public class SecurityConfiguration  {
             authorize
             .requestMatchers(OPTIONS).permitAll()
             .requestMatchers("/auth/**").permitAll()
+            .requestMatchers(POST, "/produtos").hasAuthority("ADMIN")
+            .requestMatchers(PUT, "/produtos/*").hasAuthority("ADMIN")
+            .requestMatchers(DELETE, "/produtos/*").hasAuthority("ADMIN")
+            .requestMatchers(GET, "/produtos").hasAnyAuthority("ADMIN", "USER")
             .anyRequest().authenticated()
         );
-//        http.addFilterBefore(new JwtAuthenticationFilter(new DefaultHandlerExceptionResolver(), userDetailsService()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new br.com.multivotos.multivotos_api.config.JwtAuthenticationFilter(userDetailsService()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
