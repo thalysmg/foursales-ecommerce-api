@@ -5,7 +5,7 @@ import java.util.List;
 
 public record RelatorioDTO(
     List<TicketMedioDTO> ticketsMedios,
-    List<ClienteValorTotalDTO> clientesValorTotal,
+    List<ClienteValorTotalDTO> clientesValorTotalTop5,
     BigDecimal faturamentoMensal
 ) {
 }
