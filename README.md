@@ -1,4 +1,4 @@
-# Projeto Processo Seletivo Salesfour
+# Projeto Processo Seletivo Salesfour - Desenvolver Backend Sr
 
 ## API RESTful para E-Commerce com SpringBoot, MySQL, Kafka e ElasticSearch e Autenticação com Spring Security e JWT e Liquibase para versionamento do banco de dados.
 
@@ -13,8 +13,8 @@ Foi utilizado o Kafka [Kafka](https://kafka.apache.org/) - como serviço de mens
 ## Instruções para rodar o projeto:
 
 ## 1 - Requisitos
-- **[Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) instalados**
-- **Uma IDE de sua preferência**
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) instalados
+- Uma IDE de sua preferência
 
 ## 2 - Instruções para subir a aplicação
 - 2.1 - Clonar repositório em sua máquina.
@@ -26,7 +26,7 @@ Foi utilizado o Kafka [Kafka](https://kafka.apache.org/) - como serviço de mens
 - Ao subir a aplicação, o [Liquibase](https://docs.liquibase.com/home.html) vai executar todas as migrações automaticamentes.
 - Essas migrações incluem a criação de todas as tabelas, o cadastro dos perfis ADMIN e USER e a inserção de 5 usuários. A senha está em um dos arquivos de migração.
 - No diretório **src/main/resources/db** tem um arquivo com nome **dump-foursales-ecommerce-202502041958.sql**. Esse arquivo é um dump do banco local usado no desenvolvimento, no formato .sql para facilitar a execução, com produtos e pedidos.
-- Caso queira desabilitar o liquibase, basta alterar a flag `liquibase.enabled` para **false** no arquivo *application.yml*. O dump já engloba todas as tabelas e dados.
+- Caso queira desabilitar o liquibase, basta alterar a flag `liquibase.enabled` para **false** no arquivo ***application.yml***. O dump já engloba todas as tabelas e dados.
 
 ## 4 - APIs Disponíveis:
 
