@@ -22,6 +22,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, String> {
     @Query(value = """
         SELECT p.id_cliente as cliente, AVG(p.valor_total) as valorMedio
         FROM pedido p
+        WHERE p.situacao = 'PAGO'
         GROUP BY p.id_cliente
     """, nativeQuery = true)
     List<Object[]> findTicketMediosUsuariosRaw();
@@ -35,6 +36,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, String> {
     @Query(value = """
         SELECT p.id_cliente as cliente, SUM(p.valor_total) as valorTotal
         FROM pedido p
+        WHERE p.situacao = 'PAGO'
         GROUP BY p.id_cliente
         ORDER BY SUM(p.valor_total) DESC
         LIMIT 5
@@ -42,7 +44,9 @@ public interface PedidoRepository extends JpaRepository<Pedido, String> {
     List<Object[]> findTop5ClientesQueMaisCompraramRaw();
 
     @Query(value = """
-        SELECT SUM(p.valor_total) FROM pedido p WHERE p.data >= ?1 AND p.data <= ?2
+        SELECT SUM(p.valor_total)
+        FROM pedido p
+        WHERE p.data >= ?1 AND p.data <= ?2 AND p.situacao = 'PAGO'
     """, nativeQuery = true)
     BigDecimal findFaturamentoMensal(LocalDateTime dataInicio, LocalDateTime dataFim);
 }

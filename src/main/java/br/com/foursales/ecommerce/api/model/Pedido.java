@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static br.com.foursales.ecommerce.api.enums.SituacaoPedido.PAGO;
 import static br.com.foursales.ecommerce.api.enums.SituacaoPedido.PENDENTE;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
@@ -90,7 +91,7 @@ public class Pedido {
     }
 
     public void darBaixa() {
-        situacao = PENDENTE;
+        situacao = PAGO;
         pedidosProdutos.forEach(pedidoProduto -> pedidoProduto.getProduto().atualizarQtdEstoque(pedidoProduto.getQtdProduto()));
     }
 }

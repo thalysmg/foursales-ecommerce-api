@@ -12,19 +12,25 @@ Foi utilizado o Kafka [Kafka](https://kafka.apache.org/) - como serviço de mens
 
 ## Instruções para rodar o projeto:
 
-### 1 - Requisitos
-- **Docker e Docker Compose instalado** ([Docker](https://www.docker.com/))
+## 1 - Requisitos
+- **[Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) instalados**
 - **Uma IDE de sua preferência**
 
-### 2 - Instruções para executar o projeto
-1. Clonar repositório em sua máquina.
-2. Importar o projeto na sua IDE de escolha.
-3. Executar o comando `docker compose up -d` na raiz do projeto (mesmo nível do arquivo `docker-compose.yml`). O arquivo contém os serviços da aplicação (MySQL, ElasticSearch e Kafka).
-4. Rodar a aplicação.
+## 2 - Instruções para subir a aplicação
+- 2.1 - Clonar repositório em sua máquina.
+- 2.2 - Importar o projeto na sua IDE de escolha.
+- 2.3 - Executar o comando `docker compose up -d` na raiz do projeto (mesmo nível do arquivo `docker-compose.yml`). O arquivo contém os serviços da aplicação (MySQL, ElasticSearch e Kafka).
+- 2.4 - Rodar a aplicação (pode rodar pela IDE ou executando o comando `./gradlew bootRun` no terminal, no diretório raiz do projeto).
 
-## 3 - APIs Disponíveis:
+## 3 - Popular o banco de dados
+- Ao subir a aplicação, o [Liquibase](https://docs.liquibase.com/home.html) vai executar todas as migrações automaticamentes.
+- Essas migrações incluem a criação de todas as tabelas, o cadastro dos perfis ADMIN e USER e a inserção de 5 usuários. A senha está em um dos arquivos de migração.
+- No diretório **src/main/resources/db** tem um arquivo com nome **dump-foursales-ecommerce-202502041958.sql**. Esse arquivo é um dump do banco local usado no desenvolvimento, no formato .sql para facilitar a execução, com produtos e pedidos.
+- Caso queira desabilitar o liquibase, basta alterar a flag `liquibase.enabled` para **false** no arquivo *application.yml*. O dump já engloba todas as tabelas e dados.
 
-### 3.1 - Login
+## 4 - APIs Disponíveis:
+
+#### 4.1 - Login
 ```bash
 curl --location 'http://localhost:8080/auth/login' \
 --header 'Content-Type: application/json' \
@@ -41,7 +47,7 @@ curl --location 'http://localhost:8080/auth/login' \
 }
 ```
 
-### 3.2 - Cadastrar Produto
+#### 4.2 - Cadastrar Produto
 ```bash
 curl --location 'http://localhost:8080/produtos' \
 --header 'Content-Type: application/json' \
@@ -55,7 +61,7 @@ curl --location 'http://localhost:8080/produtos' \
 }'
 ```
 
-### 3.3 - Atualizar Produto
+#### 4.3 - Atualizar Produto
 ```bash
 curl --location --request PUT 'http://localhost:8080/produtos/8ae65ce8-2b33-4bbd-be22-108f554d2ef6' \
 --header 'Content-Type: application/json' \
@@ -69,13 +75,13 @@ curl --location --request PUT 'http://localhost:8080/produtos/8ae65ce8-2b33-4bbd
 }'
 ```
 
-### 3.4 - Excluir Produto
+#### 4.4 - Excluir Produto
 ```bash
 curl --location --request DELETE 'http://localhost:8080/produtos/c05735c5-e65e-4906-b7f1-8c034a56b634' \
 --header 'Authorization: Bearer TOKEN_VALUE'
 ```
 
-### 3.5 - Listar Produtos
+#### 4.5 - Listar Produtos
 ```bash
 curl --location 'http://localhost:8080/produtos?page=0&size=10&sort=preco,DESC' \
 --header 'Authorization: Bearer TOKEN_VALUE'
@@ -86,7 +92,7 @@ curl --location 'http://localhost:8080/produtos?page=0&size=10&sort=preco,DESC' 
 - `dataMin` (Decimal)
 - `dataMax` (Decimal)
 
-### 3.6 - Cadastrar Pedido
+#### 4.6 - Cadastrar Pedido
 ```bash
 curl --location 'http://localhost:8080/pedidos' \
 --header 'Content-Type: application/json' \
@@ -105,13 +111,13 @@ curl --location 'http://localhost:8080/pedidos' \
 }'
 ```
 
-### 3.7 - Registrar Pagamento Pedido
+#### 4.7 - Registrar Pagamento Pedido
 ```bash
 curl --location --request PUT 'http://localhost:8080/pagamentos?idPedido=dfa58793-1186-4110-9222-d3d169612100' \
 --header 'Authorization: Bearer TOKEN_VALUE'
 ```
 
-### 3.8 - Relatórios
+#### 4.8 - Relatórios
 ```bash
 curl --location 'http://localhost:8080/relatorios' \
 --header 'Authorization: Bearer TOKEN_VALUE'
