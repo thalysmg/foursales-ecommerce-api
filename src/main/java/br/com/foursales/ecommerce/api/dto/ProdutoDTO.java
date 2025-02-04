@@ -54,7 +54,7 @@ public record ProdutoDTO(
     public static ProdutoDTO converterParaDTO(ProdutoElastic produto) {
         return new ProdutoDTO(
             produto.getId(), produto.getNome(), null, produto.getPreco(),
-            produto.getCategoria(), null
+            produto.getCategoria(), produto.getQtdEstoque()
         );
     }
 }

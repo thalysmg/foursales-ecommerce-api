@@ -46,6 +46,7 @@ public class ProdutoService {
 
         ProdutoElastic produtoDocument = elasticRepository.findById(produto.getId())
             .orElse(new ProdutoElastic(produto));
+        produtoDocument.atualizar(produto);
         elasticRepository.save(produtoDocument);
 
         return ProdutoDTO.converterParaDTO(produto);
@@ -55,6 +56,7 @@ public class ProdutoService {
     public void excluirProduto(String id) throws RegistroNaoEncontradoException {
         Produto produto = buscarPorId(id);
         repository.delete(produto);
+        elasticRepository.deleteById(produto.getId());
     }
 
     @Transactional(readOnly = true)
@@ -62,6 +64,12 @@ public class ProdutoService {
         return repository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException("Produto não encontrado"));
     }
 
+    /**
+     * Lista apenas os produtos que existem no estoque
+     * @param filtro
+     * @param pageable
+     * @return
+     */
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> listarProdutos(ProdutoFiltro filtro, Pageable pageable) {
         Criteria criteria = new Criteria();
@@ -78,6 +86,8 @@ public class ProdutoService {
         if (filtro.valorMax() != null) {
             criteria = criteria.and(new Criteria("preco").lessThanEqual(filtro.valorMax()));
         }
+        criteria = criteria.and(new Criteria("qtdEstoque").greaterThan(0));
+
         CriteriaQuery query = new CriteriaQuery(criteria, pageable);
         SearchHits<ProdutoElastic> searchHits = elasticsearchTemplate.search(query, ProdutoElastic.class);
         List<ProdutoDTO> produtos = searchHits.getSearchHits().stream().map(SearchHit::getContent).map(ProdutoDTO::converterParaDTO).toList();

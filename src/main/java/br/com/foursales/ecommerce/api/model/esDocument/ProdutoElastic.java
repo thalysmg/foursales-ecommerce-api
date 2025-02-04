@@ -9,6 +9,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.math.BigDecimal;
 
+import static java.util.Objects.isNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,12 +21,23 @@ public class ProdutoElastic {
     private String id;
     private String nome;
     private String categoria;
+    private Integer qtdEstoque;
     private BigDecimal preco;
 
     public ProdutoElastic(Produto produto) {
         this.id = produto.getId();
         this.nome = produto.getNome();
         this.categoria = produto.getCategoria();
+        this.qtdEstoque = produto.getQtdEstoque();
+        this.preco = produto.getPreco();
+    }
+
+    public void atualizar(Produto produto) {
+        if (isNull(produto)) return;
+
+        this.nome = produto.getNome();
+        this.categoria = produto.getCategoria();
+        this.qtdEstoque = produto.getQtdEstoque();
         this.preco = produto.getPreco();
     }
 }
