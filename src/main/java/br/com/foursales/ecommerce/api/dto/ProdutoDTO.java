@@ -1,11 +1,16 @@
 package br.com.foursales.ecommerce.api.dto;
 
 import br.com.foursales.ecommerce.api.model.Produto;
+import br.com.foursales.ecommerce.api.model.esDocument.ProdutoElastic;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public record ProdutoDTO(
     String id,
 
@@ -43,6 +48,13 @@ public record ProdutoDTO(
         return new ProdutoDTO(
             produto.getId(), produto.getNome(), produto.getDescricao(), produto.getPreco(),
             produto.getCategoria(), produto.getQtdEstoque()
+        );
+    }
+
+    public static ProdutoDTO converterParaDTO(ProdutoElastic produto) {
+        return new ProdutoDTO(
+            produto.getId(), produto.getNome(), null, produto.getPreco(),
+            produto.getCategoria(), null
         );
     }
 }

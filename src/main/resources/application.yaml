@@ -27,6 +27,13 @@ spring:
   liquibase:
     change-log: classpath:db/changelog.xml
     enabled: true
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+      username: elastic
+      password: elastic
+    connection-timeout: 5000
+    socket-timeout: 5000
 
 security:
   jwt:
