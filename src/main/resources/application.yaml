@@ -1,6 +1,6 @@
 spring:
   application:
-    name: peludinhosaespera
+    name: foursales-ecommerce-api
 # Database
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
