@@ -29,7 +29,7 @@ public class PedidoProduto {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_produto", nullable = false)
-    private Produto idProduto;
+    private Produto produto;
 
     @NotNull
     @Column(name = "qtd_produto", nullable = false)
