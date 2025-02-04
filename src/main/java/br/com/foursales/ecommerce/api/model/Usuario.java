@@ -3,7 +3,6 @@ package br.com.foursales.ecommerce.api.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -43,7 +42,7 @@ public class Usuario implements UserDetails {
     @Column(name = "senha", nullable = false, length = 60)
     private String senha;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_perfil", nullable = false)
     private Perfil perfil;
 
