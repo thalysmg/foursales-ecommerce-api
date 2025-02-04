@@ -1,5 +1,6 @@
 package br.com.foursales.ecommerce.api.model;
 
+import br.com.foursales.ecommerce.api.exceptions.RegraDeNegocioException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,10 +34,19 @@ public class PedidoProduto {
 
     @NotNull
     @Column(name = "qtd_produto", nullable = false)
-    private Integer qtdProduto;
+    private int qtdProduto;
 
     @NotNull
     @Column(name = "preco_unitario", nullable = false, precision = 11, scale = 2)
     private BigDecimal precoUnitario;
+
+    public PedidoProduto(Produto produto, int qtdProduto, BigDecimal precoUnitario) throws RegraDeNegocioException {
+        if (qtdProduto == 0) {
+            throw new RegraDeNegocioException("Não é possível adicionar um produto com a quantidade igual a 'zero'");
+        }
+        this.produto = produto;
+        this.qtdProduto = qtdProduto;
+        this.precoUnitario = precoUnitario;
+    }
 
 }

@@ -1,6 +1,7 @@
 package br.com.foursales.ecommerce.api.model;
 
 import br.com.foursales.ecommerce.api.enums.SituacaoPedido;
+import br.com.foursales.ecommerce.api.exceptions.RegraDeNegocioException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -15,23 +16,28 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static br.com.foursales.ecommerce.api.enums.SituacaoPedido.PENDENTE;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.UUID;
+import static java.math.BigDecimal.ZERO;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "pedido")
 @EntityListeners(AuditingEntityListener.class)
 public class Pedido {
@@ -68,5 +74,21 @@ public class Pedido {
 
     @JoinColumn(name = "id_pedido", nullable = false)
     @OneToMany(cascade = ALL, orphanRemoval = true)
-    private List<PedidoProduto> pedidoProdutos;
+    private List<PedidoProduto> pedidosProdutos;
+
+    public Pedido(List<PedidoProduto> pedidosProdutos) throws RegraDeNegocioException {
+        if (CollectionUtils.isEmpty(pedidosProdutos)) {
+            throw new RegraDeNegocioException("Não é possível criar um pedido sem itens");
+        }
+        this.pedidosProdutos = pedidosProdutos;
+        this.situacao = PENDENTE;
+        setValorTotal();
+    }
+
+    private void setValorTotal() {
+        this.valorTotal = pedidosProdutos.stream().map(pedidoProduto -> {
+            BigDecimal qtd = BigDecimal.valueOf(pedidoProduto.getQtdProduto());
+            return pedidoProduto.getPrecoUnitario().multiply(qtd);
+        }).reduce(ZERO, BigDecimal::add);
+    }
 }

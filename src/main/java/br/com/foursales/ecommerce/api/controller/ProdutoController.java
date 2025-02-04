@@ -3,7 +3,6 @@ package br.com.foursales.ecommerce.api.controller;
 import br.com.foursales.ecommerce.api.dto.ProdutoDTO;
 import br.com.foursales.ecommerce.api.dto.ProdutoFiltro;
 import br.com.foursales.ecommerce.api.exceptions.RegistroNaoEncontradoException;
-import br.com.foursales.ecommerce.api.model.Produto;
 import br.com.foursales.ecommerce.api.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

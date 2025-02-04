@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProdutoService {
@@ -43,5 +45,10 @@ public class ProdutoService {
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> listarProdutos(ProdutoFiltro filtro, Pageable pageable) {
         return repository.findAll(pageable).map(ProdutoDTO::converterParaDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Produto> buscarPorIds(List<String> idsProdutos) {
+        return repository.findAllByIdIn(idsProdutos);
     }
 }
