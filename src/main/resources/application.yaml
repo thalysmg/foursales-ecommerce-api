@@ -27,6 +27,8 @@ spring:
   liquibase:
     change-log: classpath:db/changelog.xml
     enabled: true
+
+  # ElasticSearch
   elasticsearch:
     rest:
       uris: http://localhost:9200
@@ -34,6 +36,18 @@ spring:
       password: elastic
     connection-timeout: 5000
     socket-timeout: 5000
+
+  # Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: foursales-ecommerce
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 security:
   jwt:

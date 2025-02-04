@@ -60,5 +60,4 @@ public class PedidoProduto {
         BigDecimal qtd = BigDecimal.valueOf(qtdProduto);
         return precoUnitario.multiply(qtd);
     }
-
 }

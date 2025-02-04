@@ -86,6 +86,11 @@ public class Pedido {
     }
 
     private void setValorTotal() {
-        this.valorTotal = pedidosProdutos.stream().map(PedidoProduto::getValorTotalProdutos).reduce(ZERO, BigDecimal::add);
+        valorTotal = pedidosProdutos.stream().map(PedidoProduto::getValorTotalProdutos).reduce(ZERO, BigDecimal::add);
+    }
+
+    public void darBaixa() {
+        situacao = PENDENTE;
+        pedidosProdutos.forEach(pedidoProduto -> pedidoProduto.getProduto().atualizarQtdEstoque(pedidoProduto.getQtdProduto()));
     }
 }

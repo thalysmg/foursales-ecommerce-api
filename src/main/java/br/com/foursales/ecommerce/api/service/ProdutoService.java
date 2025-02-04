@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
@@ -97,5 +98,12 @@ public class ProdutoService {
     @Transactional(readOnly = true)
     public List<Produto> buscarPorIds(List<String> idsProdutos) {
         return repository.findAllByIdIn(idsProdutos);
+    }
+
+    @Transactional
+    public void salvarTodos(List<Produto> produtos) {
+        produtos = repository.saveAll(produtos);
+        List<ProdutoElastic> produtosElastic = produtos.stream().map(ProdutoElastic::new).toList();
+        elasticRepository.saveAll(produtosElastic);
     }
 }
