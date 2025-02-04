@@ -17,6 +17,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+import static java.util.Objects.isNull;
+
 @Getter
 @Setter
 @Entity
@@ -43,12 +45,20 @@ public class PedidoProduto {
     private BigDecimal precoUnitario;
 
     public PedidoProduto(Produto produto, int qtdProduto, BigDecimal precoUnitario) throws RegraDeNegocioException {
+        if (isNull(precoUnitario)) {
+            throw new RegraDeNegocioException("Preço Unitário do produto não pode ser nulo");
+        }
         if (qtdProduto == 0) {
-            throw new RegraDeNegocioException("Não é possível adicionar um produto com a quantidade igual a 'zero'");
+            throw new RegraDeNegocioException("Não é possível adicionar um produto com a quantidade igual a zero");
         }
         this.produto = produto;
         this.qtdProduto = qtdProduto;
         this.precoUnitario = precoUnitario;
+    }
+
+    public BigDecimal getValorTotalProdutos() {
+        BigDecimal qtd = BigDecimal.valueOf(qtdProduto);
+        return precoUnitario.multiply(qtd);
     }
 
 }

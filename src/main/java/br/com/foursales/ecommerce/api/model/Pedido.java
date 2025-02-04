@@ -86,9 +86,6 @@ public class Pedido {
     }
 
     private void setValorTotal() {
-        this.valorTotal = pedidosProdutos.stream().map(pedidoProduto -> {
-            BigDecimal qtd = BigDecimal.valueOf(pedidoProduto.getQtdProduto());
-            return pedidoProduto.getPrecoUnitario().multiply(qtd);
-        }).reduce(ZERO, BigDecimal::add);
+        this.valorTotal = pedidosProdutos.stream().map(PedidoProduto::getValorTotalProdutos).reduce(ZERO, BigDecimal::add);
     }
 }
