@@ -49,9 +49,12 @@ public class Produto {
     private BigDecimal preco;
 
     @NotNull
-    @Lob
     @Column(name = "descricao", nullable = false)
     private String descricao;
+
+    @NotNull
+    @Column(name = "categoria", nullable = false)
+    private String categoria;
 
     @NotNull
     @Column(name = "qtd_estoque", nullable = false)

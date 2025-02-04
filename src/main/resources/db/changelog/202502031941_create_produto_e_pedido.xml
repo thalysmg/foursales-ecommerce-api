@@ -22,6 +22,9 @@
             <column name="descricao" type="TEXT">
                 <constraints nullable="false"/>
             </column>
+            <column name="categoria" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
             <column name="qtd_estoque" type="INT" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
