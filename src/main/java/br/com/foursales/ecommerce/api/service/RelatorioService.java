@@ -26,7 +26,7 @@ public class RelatorioService {
     @Transactional(readOnly = true)
     public RelatorioDTO listarRelatorio() {
         List<TicketMedioDTO> ticketsMedios = pedidoRepository.findTicketMediosUsuarios();
-        List<ClienteValorTotalDTO> clientesValorTotalTop5 = pedidoRepository.findTop5UsuariosQueMaisCompraram(Pageable.ofSize(5));
+        List<ClienteValorTotalDTO> clientesValorTotalTop5 = pedidoRepository.findTop5ClientesQueMaisCompraram();
         YearMonth mes = YearMonth.from(LocalDate.now());
         LocalDateTime dataInicio = mes.atDay(1).atStartOfDay();
         LocalDateTime dataFim = mes.atEndOfMonth().atTime(MAX);

@@ -13,22 +13,36 @@ import java.util.List;
 
 public interface PedidoRepository extends JpaRepository<Pedido, String> {
 
-    @Query("""
-        SELECT new br.com.foursales.ecommerce.api.dto.TicketMedioDTO(p.cliente.id, AVG(p.valorTotal))
-        FROM Pedido p GROUP BY p.cliente.id
-    """)
-    List<TicketMedioDTO> findTicketMediosUsuarios();
+    default List<TicketMedioDTO> findTicketMediosUsuarios() {
+        return findTicketMediosUsuariosRaw().stream()
+            .map(result -> new TicketMedioDTO((String) result[0], (BigDecimal) result[1]))
+            .toList();
+    }
 
-    @Query("""
-        SELECT new br.com.foursales.ecommerce.api.dto.ClienteValorTotalDTO(p.cliente.id, SUM(p.valorTotal))
-        FROM Pedido p
-        GROUP BY p.cliente.id 
-        ORDER BY SUM(p.valorTotal) DESC
-    """)
-    List<ClienteValorTotalDTO> findTop5UsuariosQueMaisCompraram(Pageable pageable);
+    @Query(value = """
+        SELECT p.id_cliente as cliente, AVG(p.valor_total) as valorMedio
+        FROM pedido p
+        GROUP BY p.id_cliente
+    """, nativeQuery = true)
+    List<Object[]> findTicketMediosUsuariosRaw();
 
-    @Query("""
-        SELECT SUM(p.valorTotal) FROM Pedido p WHERE p.data >= ?1 AND p.data <= ?2
-    """)
+    default List<ClienteValorTotalDTO> findTop5ClientesQueMaisCompraram() {
+        return findTop5ClientesQueMaisCompraramRaw().stream()
+            .map(result -> new ClienteValorTotalDTO((String) result[0], (BigDecimal) result[1]))
+            .toList();
+    }
+
+    @Query(value = """
+        SELECT p.id_cliente as cliente, SUM(p.valor_total) as valorTotal
+        FROM pedido p
+        GROUP BY p.id_cliente
+        ORDER BY SUM(p.valor_total) DESC
+        LIMIT 5
+    """, nativeQuery = true)
+    List<Object[]> findTop5ClientesQueMaisCompraramRaw();
+
+    @Query(value = """
+        SELECT SUM(p.valor_total) FROM pedido p WHERE p.data >= ?1 AND p.data <= ?2
+    """, nativeQuery = true)
     BigDecimal findFaturamentoMensal(LocalDateTime dataInicio, LocalDateTime dataFim);
 }
