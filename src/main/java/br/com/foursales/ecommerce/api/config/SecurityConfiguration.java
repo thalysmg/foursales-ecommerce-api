@@ -46,6 +46,9 @@ public class SecurityConfiguration  {
             .requestMatchers(PUT, "/produtos/*").hasAuthority("ADMIN")
             .requestMatchers(DELETE, "/produtos/*").hasAuthority("ADMIN")
             .requestMatchers(GET, "/produtos").hasAnyAuthority("ADMIN", "USER")
+
+            .requestMatchers(POST, "/pedidos").hasAuthority("USER")
+            .requestMatchers(POST, "/pagamentos").hasAuthority("USER")
             .anyRequest().authenticated()
         );
         http.addFilterBefore(new br.com.multivotos.multivotos_api.config.JwtAuthenticationFilter(userDetailsService()), UsernamePasswordAuthenticationFilter.class);
