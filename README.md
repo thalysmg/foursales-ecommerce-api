@@ -1,4 +1,4 @@
-# Projeto Processo Seletivo Salesfour - Desenvolver Backend Sr
+# Projeto Processo Seletivo Foursales - Desenvolver Backend Sr
 
 ## API RESTful para E-Commerce com SpringBoot, MySQL, Kafka e ElasticSearch e Autenticação com Spring Security e JWT e Liquibase para versionamento do banco de dados.
 
