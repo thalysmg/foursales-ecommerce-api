@@ -4,7 +4,7 @@ import br.com.foursales.ecommerce.api.dto.ProdutoDTO;
 import br.com.foursales.ecommerce.api.dto.ProdutoFiltro;
 import br.com.foursales.ecommerce.api.exceptions.RegistroNaoEncontradoException;
 import br.com.foursales.ecommerce.api.model.Produto;
-import br.com.foursales.ecommerce.api.model.esDocument.ProdutoElastic;
+import br.com.foursales.ecommerce.api.model.elasticSearch.ProdutoElastic;
 import br.com.foursales.ecommerce.api.repository.ProdutoRepository;
 import br.com.foursales.ecommerce.api.repository.elasticSearch.ProdutoElasticRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 

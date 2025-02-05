@@ -1,7 +1,7 @@
 package br.com.foursales.ecommerce.api.dto;
 
 import br.com.foursales.ecommerce.api.model.Produto;
-import br.com.foursales.ecommerce.api.model.esDocument.ProdutoElastic;
+import br.com.foursales.ecommerce.api.model.elasticSearch.ProdutoElastic;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package br.com.foursales.ecommerce.api.model.esDocument;
+package br.com.foursales.ecommerce.api.model.elasticSearch;
 
 import br.com.foursales.ecommerce.api.model.Produto;
 import jakarta.persistence.Id;
