@@ -14,14 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.apache.logging.log4j.util.Strings.isNotBlank;
+import static br.com.foursales.ecommerce.api.repository.criteriaCreator.ProdutoCriteriaCreator.createCriteriaQueryPorFiltro;
 
 @Service
 @RequiredArgsConstructor
@@ -72,23 +71,7 @@ public class ProdutoService {
      */
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> listarProdutos(ProdutoFiltro filtro, Pageable pageable) {
-        Criteria criteria = new Criteria();
-
-        if (isNotBlank(filtro.nome())) {
-            criteria = criteria.and(new Criteria("nome").expression("\""+ filtro.nome() + "\""));
-        }
-        if (isNotBlank(filtro.categoria())) {
-            criteria = criteria.and(new Criteria("categoria").is(filtro.categoria()));
-        }
-        if (filtro.valorMin() != null) {
-            criteria = criteria.and(new Criteria("preco").greaterThanEqual(filtro.valorMin()));
-        }
-        if (filtro.valorMax() != null) {
-            criteria = criteria.and(new Criteria("preco").lessThanEqual(filtro.valorMax()));
-        }
-        criteria = criteria.and(new Criteria("qtdEstoque").greaterThan(0));
-
-        CriteriaQuery query = new CriteriaQuery(criteria, pageable);
+        CriteriaQuery query = createCriteriaQueryPorFiltro(filtro, pageable);
         SearchHits<ProdutoElastic> searchHits = elasticsearchTemplate.search(query, ProdutoElastic.class);
         List<ProdutoDTO> produtos = searchHits.getSearchHits().stream().map(SearchHit::getContent).map(ProdutoDTO::converterParaDTO).toList();
         return new PageImpl<>(produtos, pageable, searchHits.getTotalHits());
