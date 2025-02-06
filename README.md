@@ -20,6 +20,9 @@ Foi utilizado o Kafka [Kafka](https://kafka.apache.org/) - como serviço de mens
 - 2.1 - Clonar repositório em sua máquina.
 - 2.2 - Importar o projeto na sua IDE de escolha.
 - 2.3 - Executar o comando `docker compose up -d` na raiz do projeto (mesmo nível do arquivo `docker-compose.yml`). O arquivo contém os serviços da aplicação (MySQL, ElasticSearch e Kafka).
+- 2.4 - Acessar o banco de dados principal com o comando `docker exec -it local_mysql_db mysql -uroot -proot`
+- 2.5 - Alterar o host do usuário root, para que a aplicação Java consiga acessar o banco com o comando `update mysql.user set host = '%' WHERE user = 'root' and host = 'localhost';` (Não recomendado para ambientes em produção)
+- 2.6 - Criar o database com o comando `create database foursales_ecommerce;`
 - 2.4 - Rodar a aplicação (pode rodar pela IDE ou executando o comando `./gradlew bootRun` no terminal, no diretório raiz do projeto).
 
 ## 3 - Popular o banco de dados
