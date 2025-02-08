@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class SecurityConfiguration  {
             .requestMatchers(POST, "/pagamentos").hasAuthority("USER")
             .anyRequest().authenticated()
         );
-        http.addFilterBefore(new br.com.multivotos.multivotos_api.config.JwtAuthenticationFilter(userDetailsService()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(userDetailsService()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
