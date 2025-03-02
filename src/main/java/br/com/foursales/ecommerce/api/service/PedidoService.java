@@ -26,19 +26,9 @@ public class PedidoService {
     @Transactional(rollbackFor = Exception.class)
     public void cadastrar(PedidoDTO pedidoDTO) throws RegraDeNegocioException, RegistroNaoEncontradoException {
         List<Produto> produtos = produtoService.buscarPorIds(pedidoDTO.getIdsProdutos());
-        if (produtos.stream().anyMatch(produto -> produto.getQtdEstoque().equals(0))) {
-            throw new RegraDeNegocioException("Não foi possível realizar o pedidio. Um ou mais produtos estão esgotados em nosso estoque");
-        }
-        List<PedidoProduto> pedidosProdutos = new ArrayList<>();
-        for (Produto produto : produtos) {
-            int qtdProduto = pedidoDTO.getQuantidadePorIdProduto(produto.getId());
-            if (produto.getQtdEstoque() < qtdProduto) {
-                throw new RegraDeNegocioException(
-                    "Erro ao realizar pedido. Quantidade selecionada do produto " + produto.getNome() + " é maior que a quantidade disponível no estoque"
-                );
-            }
-            pedidosProdutos.add(new PedidoProduto(produto, qtdProduto, produto.getPreco()));
-        }
+        validarSeAlgumProdutoEstaZerado(produtos);
+
+        List<PedidoProduto> pedidosProdutos = getPedidosProdutos(produtos, pedidoDTO);
         Pedido pedido = repository.save(new Pedido(pedidosProdutos));
         pedidoProducer.enviarPedidoCriado(pedido.getId());
     }
@@ -52,5 +42,29 @@ public class PedidoService {
     @Transactional
     public void salvar(Pedido pedido) {
         repository.save(pedido);
+    }
+
+    private void validarSeAlgumProdutoEstaZerado(List<Produto> produtos) throws RegraDeNegocioException {
+        if (produtos.stream().anyMatch(produto -> produto.getQtdEstoque().equals(0))) {
+            throw new RegraDeNegocioException("Não foi possível realizar o pedidio. Um ou mais produtos estão esgotados em nosso estoque");
+        }
+    }
+
+    private List<PedidoProduto> getPedidosProdutos(List<Produto> produtos, PedidoDTO pedidoDTO) throws RegistroNaoEncontradoException, RegraDeNegocioException {
+        List<PedidoProduto> pedidosProdutos = new ArrayList<>();
+        for (Produto produto : produtos) {
+            int qtdProduto = pedidoDTO.getQuantidadePorIdProduto(produto.getId());
+            validarQuantidadeProdutoPedido(produto, qtdProduto);
+            pedidosProdutos.add(new PedidoProduto(produto, qtdProduto, produto.getPreco()));
+        }
+        return pedidosProdutos;
+    }
+
+    private void validarQuantidadeProdutoPedido(Produto produto, int qtdProduto) throws RegraDeNegocioException {
+        if (produto.getQtdEstoque() < qtdProduto) {
+            throw new RegraDeNegocioException(
+                "Erro ao realizar pedido. Quantidade selecionada do produto " + produto.getNome() + " é maior que a quantidade disponível no estoque"
+            );
+        }
     }
 }
