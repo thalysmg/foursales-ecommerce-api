@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: foursales-ecommerce-api
+# Database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/foursales_ecommerce
+    username: root
+    password: root
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 10
+      idle-timeout: 10000
+      max-lifetime: 1000
+      connection-test-query: SELECT 1
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  # Liquibase
+  liquibase:
+    change-log: classpath:db/changelog.xml
+    enabled: true
+
+  # ElasticSearch
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+      username: elastic
+      password: elastic
+    connection-timeout: 5000
+    socket-timeout: 5000
+
+  # Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: foursales-ecommerce
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+security:
+  jwt:
+    secret-key: ec575a08040ae356c4122856991ef840270e206fc2ecd9b0c7d341cfbb412bfd
+    expiration-time: 3600000

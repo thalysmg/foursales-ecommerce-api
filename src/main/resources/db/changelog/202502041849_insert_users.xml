@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+>
+    <changeSet id="202502041854_1" author="thalys.gadelha">
+        <sql>
+            -- senha admin123
+            INSERT INTO usuario (nome, email, senha, id_perfil, ativo)
+            VALUES ('Cliente 1', 'cliente1@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2, TRUE);
+
+            INSERT INTO usuario (nome, email, senha, id_perfil, ativo)
+            VALUES ('Cliente 2', 'cliente2@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2, TRUE);
+
+            INSERT INTO usuario (nome, email, senha, id_perfil, ativo)
+            VALUES ('Cliente 3', 'cliente3@test.com', '$2a$10$XtbqDI8DI9f2MphcdklGJenjjTv3iebAxyjtcddAIFWPCOAoARhNy', 2, TRUE);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
