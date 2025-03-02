@@ -1,4 +1,4 @@
-package br.com.multivotos.multivotos_api.config;
+package br.com.foursales.ecommerce.api.config;
 
 import br.com.foursales.ecommerce.api.exceptions.TokenInvalidoException;
 import br.com.foursales.ecommerce.api.utils.JwtService;
